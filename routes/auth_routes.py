@@ -10,6 +10,6 @@ def login():
     password = data.get('password')
 
     # Simple hardcoded admin — replace with real auth if needed
-    if username == 'admin' and password == 'rupali09':
+    if username == 'admin' and password == 'admin':
         return jsonify({"success": True, "role": "admin", "message": "Login successful"})
     return jsonify({"success": False, "message": "Invalid credentials"}), 401
