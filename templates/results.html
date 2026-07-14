@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Results & Billing - MediChain</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{{ url_for('static', filename='js/api.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/results.js') }}" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Roboto', sans-serif; 
+      margin: 0;
+      display: flex;
+    }
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, #2c5282 0%, #3c6382 100%);
+      height: 100vh;
+      padding: 0;
+      color: white;
+    }
+    .main-content {
+      flex-grow: 1;
+      background-color: #f7fafc;
+      height: 100vh;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="p-6 border-b border-blue-600 border-opacity-30">
+      <div class="flex items-center">
+        <svg class="w-8 h-8 text-cyan-300 mr-3" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+        </svg>
+        <h1 class="text-2xl font-medium text-white">MediChain</h1>
+      </div>
+    </div>
+    
+    <nav class="py-6 px-4">
+      <div class="space-y-2">
+        <a href="/dashboard" class="flex items-center px-4 py-3 rounded-lg text-gray-200 hover:bg-blue-600 hover:bg-opacity-50 transition-colors">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+          </svg>
+          Dashboard
+        </a>
+        
+        <a href="/patients" class="flex items-center px-4 py-3 rounded-lg text-gray-200 hover:bg-blue-600 hover:bg-opacity-50 transition-colors">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+          </svg>
+          Patients
+        </a>
+        
+        <a href="/technicians" class="flex items-center px-4 py-3 rounded-lg text-gray-200 hover:bg-blue-600 hover:bg-opacity-50 transition-colors">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+          </svg>
+          Technicians
+        </a>
+        
+        <a href="/labtests" class="flex items-center px-4 py-3 rounded-lg text-gray-200 hover:bg-blue-600 hover:bg-opacity-50 transition-colors">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 3a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z"/>
+          </svg>
+          Lab Tests
+        </a>
+        
+        <a href="/bookings" class="flex items-center px-4 py-3 rounded-lg text-gray-200 hover:bg-blue-600 hover:bg-opacity-50 transition-colors">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+          </svg>
+          Bookings
+        </a>
+        
+        <a href="/results" class="flex items-center px-4 py-3 rounded-lg bg-blue-500 bg-opacity-80 text-white">
+          <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+          Test Results
+        </a>
+      </div>
+    </nav>
+  </div>
+  
+  <div class="main-content">
+    <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+            <span class="text-white font-medium">A</span>
+          </div>
+          <button onclick="logout()" class="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <div class="p-6">
+      <div class="flex justify-between items-start mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Test Results</h1>
+          <p class="text-gray-600">Input results for pending tests and view completed reports.</p>
+        </div>
+        <div class="relative w-72">
+          <input type="text" id="resultSearch" placeholder="Search by patient or test..." class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+          <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="p-6 border-b border-gray-200">
+          <h2 class="text-xl font-bold text-gray-900 mb-1">All Test Results</h2>
+          <p class="text-gray-500">Complete list of test bookings and results</p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="text-left py-4 px-6 text-sm font-medium text-gray-500">Patient</th>
+                <th class="text-left py-4 px-6 text-sm font-medium text-gray-500">Test Name</th>
+                <th class="text-left py-4 px-6 text-sm font-medium text-gray-500">Booked On</th>
+                <th class="text-left py-4 px-6 text-sm font-medium text-gray-500">Status</th>
+                <th class="text-left py-4 px-6 text-sm font-medium text-gray-500">Bill Status</th>
+                <th class="text-left py-4 px-6 text-sm font-medium text-gray-500">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="addResultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-full overflow-y-auto">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 id="addResultModalTitle" class="text-2xl font-bold text-gray-900">Add Test Result</h2>
+            <p class="text-gray-500 mt-1">Enter the results for the selected test.</p>
+          </div>
+          <button id="closeAddResultModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <form id="resultForm" class="p-6 space-y-4">
+        <input type="hidden" id="diagnosis_id_addResult">
+        
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <label for="test_parameter" class="block text-sm font-medium text-gray-700 mb-2">Test Parameter*</label>
+            <input type="text" id="test_parameter" placeholder="e.g., Hemoglobin" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" required>
+          </div>
+          <div>
+            <label for="test_value" class="block text-sm font-medium text-gray-700 mb-2">Test Value</label>
+            <input type="text" id="test_value" placeholder="e.g., 14.2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <label for="unit" class="block text-sm font-medium text-gray-700 mb-2">Unit</label>
+            <input type="text" id="unit" placeholder="e.g., g/dL" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+          </div>
+          <div>
+            <label for="normal_range" class="block text-sm font-medium text-gray-700 mb-2">Normal Range</label>
+            <input type="text" id="normal_range" placeholder="e.g., 13.5 - 17.5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+          </div>
+        </div>
+        
+        <div>
+          <label for="test_comments" class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+          <textarea id="test_comments" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"></textarea>
+        </div>
+        
+        <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+          <button type="button" id="cancelAddResultBtn" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+            Add Result
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="reportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-full overflow-y-auto">
+      <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">Test Report</h2>
+          <p class="text-gray-500 mt-1">Detailed report and billing summary</p>
+        </div>
+        <div class="flex space-x-2">
+          <button id="editReportBtn" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-colors">
+            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Edit Report
+          </button>
+          <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z"/>
+            </svg>
+            Print
+          </button>
+          <button id="downloadPdfBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            Download PDF
+          </button>
+          <button id="closeReportModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div id="reportContent" class="p-6 space-y-6">
+        </div>
+    </div>
+  </div>
+
+  <div id="editReportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-full overflow-y-auto">
+      <div class="p-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900">Edit Test Report</h2>
+            <p class="text-gray-500 mt-1">Update diagnosis, test results, and billing information.</p>
+          </div>
+          <button id="closeEditReportModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <form id="editReportForm" class="p-6 space-y-6">
+        <input type="hidden" id="diagnosis_id_editReport">
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Diagnosis Remarks</h3>
+          <textarea id="diagnosis_remarks_edit" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"></textarea>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Test Results</h3>
+          <div id="editResultsContainer" class="space-y-4">
+            </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Billing Details</h3>
+          <input type="hidden" id="bill_id_edit">
+          <div class="grid grid-cols-2 gap-6">
+            <div>
+              <label for="total_amt_edit" class="block text-sm font-medium text-gray-700 mb-2">Total Amount</label>
+              <input type="number" id="total_amt_edit" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+            </div>
+            <div>
+              <label for="payment_status_edit" class="block text-sm font-medium text-gray-700 mb-2">Payment Status</label>
+              <select id="payment_status_edit" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+          <button type="button" id="cancelEditReportBtn" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
